@@ -57,14 +57,32 @@ def delete_columns(output_file):
     df.to_csv(output_file, index=False)
 
 
+def rename_columns(output_file):
+    columns_to_rename = {
+        "House Number": "Number",
+        "Apartment Number": "ApartmentNumber",
+        "Zip Code": "PostalCode",
+    }  # original name: new name
+
+    # Read the CSV file
+    df = pd.read_csv(output_file)
+
+    # Rename the specified columns
+    df = df.rename(columns=columns_to_rename)
+
+    # Save the result to a new CSV file
+    df.to_csv(output_file, index=False)
+
+
 def main():
     input_file = "C:/Users/gianl/Downloads/input.csv"
     output_file = "C:/Users/gianl/Downloads/output.csv"
-
     merge_columns(input_file, output_file)
     print("Columns merged successfully!")
     delete_columns(output_file)
     print("Unused columns deleted successfully!")
+    rename_columns(output_file)
+    print("Columns renamed successfully!")
 
 
 if __name__ == "__main__":
