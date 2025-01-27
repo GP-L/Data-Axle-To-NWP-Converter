@@ -74,6 +74,26 @@ def rename_columns(output_file):
     df.to_csv(output_file, index=False)
 
 
+def rearrange_columns(output_file):
+    new_order = [
+        "ApartmentNumber",
+        "Number",
+        "Street",
+        "City",
+        "PostalCode",
+        "State",
+    ]
+
+    # Read the CSV file
+    df = pd.read_csv(output_file)
+
+    # Rearrange the columns
+    df = df[new_order]
+
+    # Save the result to a new CSV file
+    df.to_csv(output_file, index=False)
+
+
 def main():
     input_file = "C:/Users/gianl/Downloads/input.csv"
     output_file = "C:/Users/gianl/Downloads/output.csv"
@@ -83,6 +103,8 @@ def main():
     print("Unused columns deleted successfully!")
     rename_columns(output_file)
     print("Columns renamed successfully!")
+    rearrange_columns(output_file)
+    print("Columns rearranged successfully!")
 
 
 if __name__ == "__main__":
