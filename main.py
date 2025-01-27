@@ -1,4 +1,6 @@
 import pandas as pd
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
 
 
 def merge_columns(input_file, output_file):
@@ -94,6 +96,45 @@ def rearrange_columns(output_file):
     df.to_csv(output_file, index=False)
 
 
+def geocoder(address, retries=3):
+    geolocator = Nominatim(user_agent="Data Axle To NWP Converter")
+    for _ in range(retries):
+        try:
+            location = geolocator.geocode(address)
+            if location:
+                return location.latitude, location.longitude
+            else:
+                return None, None
+        except GeocoderTimedOut:
+            continue
+    return None, None
+
+
+def geocode_addresses(output_file):
+    # Read the CSV file
+    df = pd.read_csv(output_file)
+
+    # Create full address column
+    df["Full Address"] = (
+        df["Number"].astype(str)
+        + " "
+        + df["Street"]
+        + " "
+        + df["State"]
+        + " "
+        + df["PostalCode"].astype(str)
+    )
+
+    # Geocode addresses
+    df[["Latitude", "Longitude"]] = df["Full Address"].apply(geocoder).apply(pd.Series)
+
+    # Drop the temporary columns
+    df = df.drop(columns=["Full Address"])
+
+    # Save the result to a new CSV file
+    df.to_csv(output_file, index=False)
+
+
 def main():
     input_file = "C:/Users/gianl/Downloads/input.csv"
     output_file = "C:/Users/gianl/Downloads/output.csv"
@@ -105,6 +146,8 @@ def main():
     print("Columns renamed successfully!")
     rearrange_columns(output_file)
     print("Columns rearranged successfully!")
+    geocode_addresses(output_file)
+    print("Addresses geocoded successfully!")
 
 
 if __name__ == "__main__":
