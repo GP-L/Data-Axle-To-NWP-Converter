@@ -44,12 +44,27 @@ def merge_columns(input_file, output_file):
     df.to_csv(output_file, index=False)
 
 
+def delete_columns(output_file):
+    columns_to_delete = ["Last Name", "First Name", "Phone Number", "Gender"]
+
+    # Read the CSV file
+    df = pd.read_csv(output_file)
+
+    # Drop the specified columns
+    df = df.drop(columns=columns_to_delete)
+
+    # Save the result to a new CSV file
+    df.to_csv(output_file, index=False)
+
+
 def main():
     input_file = "C:/Users/gianl/Downloads/input.csv"
     output_file = "C:/Users/gianl/Downloads/output.csv"
 
     merge_columns(input_file, output_file)
     print("Columns merged successfully!")
+    delete_columns(output_file)
+    print("Unused columns deleted successfully!")
 
 
 if __name__ == "__main__":
