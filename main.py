@@ -5,22 +5,34 @@ def merge_columns(input_file, output_file, col1, col2, col3, col4, new_col):
     # Read the CSV file
     df = pd.read_csv(input_file)
 
+    # Create copy of original columns with "_c" suffix
+    col1_c = col1 + "_c"
+    col2_c = col2 + "_c"
+    col3_c = col3 + "_c"
+    col4_c = col4 + "_c"
+
     # Replace nan values with an empty string
-    df[col1] = df[col1].fillna("")
-    df[col2] = df[col2].fillna("")
-    df[col3] = df[col3].fillna("")
-    df[col4] = df[col4].fillna("")
+    df[col1_c] = df[col1].fillna("")
+    df[col2_c] = df[col2].fillna("")
+    df[col3_c] = df[col3].fillna("")
+    df[col4_c] = df[col4].fillna("")
+
+    # Drop the original columns
+    df = df.drop(columns=[col1, col2, col3, col4])
 
     # Merge the columns
     df[new_col] = (
-        df[col1].astype(str)
+        df[col1_c].astype(str)
         + " "
-        + df[col2].astype(str)
+        + df[col2_c].astype(str)
         + " "
-        + df[col3].astype(str)
+        + df[col3_c].astype(str)
         + " "
-        + df[col4].astype(str)
+        + df[col4_c].astype(str)
     ).str.strip()  # strips any leading or trailing whitespace
+
+    # Drop the copied columns
+    df = df.drop(columns=[col1_c, col2_c, col3_c, col4_c])
 
     # Save the result to a new CSV file
     df.to_csv(output_file, index=False)
