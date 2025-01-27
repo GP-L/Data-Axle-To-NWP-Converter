@@ -1,15 +1,21 @@
 import pandas as pd
 
 
-def merge_columns(input_file, output_file, col1, col2, col3, col4, new_col):
-    # Read the CSV file
-    df = pd.read_csv(input_file)
+def merge_columns(input_file, output_file):
+    col1 = "Pre-directional"
+    col2 = "Street"
+    col3 = "Street Suffix"
+    col4 = "Post-directional"
+    new_col = "Street"  # new column generated from merger
 
     # Create copy of original columns with "_c" suffix
     col1_c = col1 + "_c"
     col2_c = col2 + "_c"
     col3_c = col3 + "_c"
     col4_c = col4 + "_c"
+
+    # Read the CSV file
+    df = pd.read_csv(input_file)
 
     # Replace nan values with an empty string
     df[col1_c] = df[col1].fillna("")
@@ -41,13 +47,8 @@ def merge_columns(input_file, output_file, col1, col2, col3, col4, new_col):
 def main():
     input_file = "C:/Users/gianl/Downloads/input.csv"
     output_file = "C:/Users/gianl/Downloads/output.csv"
-    col1 = "Pre-directional"
-    col2 = "Street"
-    col3 = "Street Suffix"
-    col4 = "Post-directional"
-    new_col = "Street"  # new column generated from merger
 
-    merge_columns(input_file, output_file, col1, col2, col3, col4, new_col)
+    merge_columns(input_file, output_file)
     print("Columns merged successfully!")
 
 
