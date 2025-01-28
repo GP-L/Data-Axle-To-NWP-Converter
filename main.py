@@ -135,6 +135,20 @@ def geocode_addresses(output_file):
     df.to_csv(output_file, index=False)
 
 
+def find_city(output_file):
+    # Read the CSV file
+    df = pd.read_csv(output_file)
+
+    # Find the city that appears the most in the whole file
+    most_common_city = df["City"].mode()[0]
+
+    # Update the City column to the most common city
+    df["City"] = most_common_city
+
+    # Save the result to a new CSV file
+    df.to_csv(output_file, index=False)
+
+
 def main():
     input_file = "C:/Users/gianl/Downloads/input.csv"
     output_file = "C:/Users/gianl/Downloads/output.csv"
@@ -146,8 +160,10 @@ def main():
     print("Columns renamed successfully!")
     rearrange_columns(output_file)
     print("Columns rearranged successfully!")
-    geocode_addresses(output_file)
-    print("Addresses geocoded successfully!")
+    # geocode_addresses(output_file)
+    # print("Addresses geocoded successfully!")
+    find_city(output_file)
+    print("City names standardized successfully!")
 
 
 if __name__ == "__main__":
